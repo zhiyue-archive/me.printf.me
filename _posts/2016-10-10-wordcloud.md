@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "测试图片显示效果"
+title: "NLP可视化: 用Python生成词云"
 description: ""
 category: 机器学习
-tags: []
+tags: [ wordcloud, nlp, 可视化]
 ---
 ![](http://7xnq5e.com1.z0.glb.clouddn.com/2016-06-26-00-50-34.png)
 
