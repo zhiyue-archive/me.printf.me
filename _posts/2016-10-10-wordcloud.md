@@ -102,6 +102,7 @@ content = f.read().decode('utf-8')
 ```
 
 但是每次传入一个文件都要显示指定它的编码这样会不会太麻烦了， 因此我们引入`chardet`来检测文件的编码， 这样就需要额外读取多一次文件来检测文件的编码， 但是并不需要读取整个文件（当然这样检测的可信度会更高，但一般情况下准确度可以了），还要注意设置`errors='ignore'`可以防止因为个别特殊的字符导致解析错误， 当然这个函数还可以改进，必去使用`open`以二进制的形式打开，读取之后再seek回开始的位置也可以:
+
 ```python
 f = open('dataset/xiaoshuo/90.txt', 'rb')
 predict = chardet.detect(f.read(1000))
@@ -114,6 +115,7 @@ print f.tell()
 content = f.read().decode(predict['encoding'])
 print content[:100]
 ```
+
 下面我以小说[三体](https://book.douban.com/subject/2567698/) 作为测试数据。
 
 
