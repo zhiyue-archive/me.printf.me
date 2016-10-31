@@ -8,10 +8,6 @@ tags: [ wordcloud, nlp, 可视化]
 ![](http://7xnq5e.com1.z0.glb.clouddn.com/2016-06-26-00-50-34.png)
 
 
-![](http://7xnq5e.com1.z0.glb.clouddn.com/2016-06-26-00-48-36.png)
-
-
-
 
 
 如果你使用`python`来完成这件事，那么恭喜你，因为已经有现成的库来做这件事情(python 的轮子就是多)直接使用[word_cloud](https://github.com/amueller/word_cloud)的lib就可以很迅速的生成各种很漂亮的词云：
@@ -97,10 +93,12 @@ def load_txt(filename):
 ```
 
 这里用到了一个`chardet` 和 `io` 库，因为对于计算机来说，字符对它来说只是一个个字节，它并不知道这些字节是什么字符，所以必须你告诉它这些字节使用了什么编码，然后计算机就能根据去查编码表，才能找出对应的字符， 直接使用内置的`open`是很可能会出现问题的。在python2.x的版本中是不支持显示地指定编码的。如果你使用`open`，你最好使用`二进制模式`，然后再解码
+
 ```python
 f = open('test.txt', 'rb')
 content = f.read().decode('utf-8')
 ```
+
 但是每次传入一个文件都要显示指定它的编码这样会不会太麻烦了， 因此我们引入`chardet`来检测文件的编码， 这样就需要额外读取多一次文件来检测文件的编码， 但是并不需要读取整个文件（当然这样检测的可信度会更高，但一般情况下准确度可以了），还要注意设置`errors='ignore'`可以防止因为个别特殊的字符导致解析错误， 当然这个函数还可以改进，必去使用`open`以二进制的形式打开，读取之后再seek回开始的位置也可以:
 ```python
 f = open('dataset/xiaoshuo/90.txt', 'rb')
@@ -226,11 +224,13 @@ for word,fre in top_words_frequency[:200]:
 
 ![](http://7xnq5e.com1.z0.glb.clouddn.com/2016-11-01-00-12-40.png)
 虽然用了字典，但是出来的结果发现仍然很不理想，比如多了的恨过我们不想要的单字`中 说`等等没有过滤掉的，目前这种方案下我的做法是把单字的都过滤掉。
+
 ```python
 def filter_single_word(words):
     seg_list = [ word for word in words if len(word) > 1]
     return seg_list
 ```
+
 ![](http://7xnq5e.com1.z0.glb.clouddn.com/2016-11-01-00-12-19.png)
 会发现结果好了很多。当然还有一种做法就是过滤完停用词之后，直接调用wordcloud的`generate`方法，传入参数它要求传入字符串并且词与词之间以空格分隔(其实就是英文环境下的字符串)，这个留到后面说。这似乎已经达到我们分词然后统计词频的目的了。但是有没有更好的方案呢？有的，就是下面描述的第二种方法
 #### 使用`tf-idf` 和 `textrank`算法提取关键字
@@ -273,6 +273,7 @@ for word,fre in key_words:
 - `allowPOS` 仅包括指定词性的词，我这里只选定了`名词，形容词，动词，和副词`
 这里的`idf` 语料库，使用的是默认`jieba`的语料库，如果经常传入的是特定领域的文本，还可以自己统计还可以统计语料库`idf`,然后使用`jieba.analyse.set_idf_path(file_name)`传入。
 ##### 使用`textrank`算法
+
 TextRank算法基于PageRank，用于为文本生成关键字和摘要。这里就不详细描述了。以后有机会再单独写一篇文章介绍。
 使用`jieba`内置的`textrank`实现:
 
