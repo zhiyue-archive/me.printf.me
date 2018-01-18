@@ -1,4 +1,12 @@
-# OpenCV 使用记录
+---
+layout: post
+title: "OpenCV 使用记录"
+description: ""
+category: 技术
+tags: [ 计算机视觉]
+---
+
+
 ## 1.安装
 ### 1.1 windows
 ### 1.2 linux (Debian)
